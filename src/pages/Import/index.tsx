@@ -54,31 +54,6 @@ const Import: React.FC = () => {
     setUploadedFiles(filesList);
   }
 
-  // async function handleUpload(files: File[]): Promise<void> {
-  //   const file = files.length > 0 ? files[0] : null;
-
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append('file', file);
-
-  //     const res = await api.post('transactions/import', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-
-  //     const transactionsData = res.data.map((tx: any) => {
-  //       return {
-  //         ...tx,
-  //         value: formatValue(tx.value),
-  //         createdAtFormatted: format(parseISO(tx.created_at), 'dd/MM/yyyy', {}),
-  //       };
-  //     });
-
-  //     setTransactions([...transactions, ...transactionsData]);
-  //   }
-  // }
-
   return (
     <>
       <Header size="small" />

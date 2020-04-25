@@ -47,8 +47,6 @@ const Dashboard: React.FC = () => {
         };
       });
 
-      // console.log(transactionsData);
-
       setTransactions(transactionsData);
 
       const balanceData = res.data.balance;
@@ -60,31 +58,6 @@ const Dashboard: React.FC = () => {
 
     loadTransactions();
   }, []);
-
-  // async function handleUpload(files: File[]): Promise<void> {
-  //   const file = files.length > 0 ? files[0] : null;
-
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append('file', file);
-
-  //     const res = await api.post('transactions/import', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-
-  //     const transactionsData = res.data.map((tx: any) => {
-  //       return {
-  //         ...tx,
-  //         value: formatValue(tx.value),
-  //         createdAtFormatted: format(parseISO(tx.created_at), 'dd/MM/yyyy', {}),
-  //       };
-  //     });
-
-  //     setTransactions([...transactions, ...transactionsData]);
-  //   }
-  // }
 
   return (
     <>
@@ -114,11 +87,8 @@ const Dashboard: React.FC = () => {
           </Card>
         </CardContainer>
 
-        {/* <br />
-        <Upload data-testid="upload" onUpload={handleUpload} /> */}
-
         <br />
-        <Link to="import">Importar arquivo CSV</Link>
+        <Link to="import">Importar</Link>
 
         <TableContainer>
           <table>
