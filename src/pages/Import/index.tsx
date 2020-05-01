@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import filesize from 'filesize';
 
 import Header from '../../components/Header';
 import FileList from '../../components/FileList';
@@ -21,23 +22,18 @@ const Import: React.FC = () => {
   const history = useHistory();
 
   async function handleUpload(): Promise<void> {
-    const data = new FormData();
-
-    /**
-     * TODO: - Avaliar se é necessário enviar multiplos arquivos, pois
-     * backend aceita 1 por vez: single.
-     */
-    data.append('file', uploadedFiles[0].file);
-
     try {
-      // await api.post('/transactions/import', data);
-      await api.post('transactions/import', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      history.push('/');
+      await Promise.all(
+        uploadedFiles.map(file => {
+          const data = new FormData();
+          data.append('file', file.file, file.name);
+          return api.post('/transactions/import', data);
+        }),
+      );
+
+      history.goBack();
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err.response.error);
     }
   }
@@ -47,11 +43,11 @@ const Import: React.FC = () => {
       return {
         file,
         name: file.name,
-        readableSize: String(file.size),
+        readableSize: filesize(file.size),
       };
     });
 
-    setUploadedFiles(filesList);
+    setUploadedFiles([...uploadedFiles, ...filesList]);
   }
 
   return (
@@ -59,10 +55,6 @@ const Import: React.FC = () => {
       <Header size="small" />
       <Container>
         <Title>Importar uma transação</Title>
-
-        <br />
-        <Link to="/">Voltar Dashboard</Link>
-
         <ImportFileContainer>
           <Upload onUpload={submitFile} />
           {!!uploadedFiles.length && <FileList files={uploadedFiles} />}
@@ -73,7 +65,7 @@ const Import: React.FC = () => {
               Permitido apenas arquivos CSV
             </p>
             <button onClick={handleUpload} type="button">
-              Enviar
+              Importar
             </button>
           </Footer>
         </ImportFileContainer>

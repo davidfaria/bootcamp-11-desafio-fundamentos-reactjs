@@ -22,7 +22,7 @@ interface Transaction {
   type: 'income' | 'outcome';
   category: { title: string };
   created_at: Date;
-  createdAtFormatted?: string;
+  // createdAtFormatted?: string;
 }
 
 interface Balance {
@@ -42,8 +42,8 @@ const Dashboard: React.FC = () => {
       const transactionsData = res.data.transactions.map((tx: any) => {
         return {
           ...tx,
-          value: formatValue(tx.value),
-          createdAtFormatted: format(parseISO(tx.created_at), 'dd/MM/yyyy', {}),
+          formattedValue: formatValue(tx.value),
+          formattedDate: format(parseISO(tx.created_at), 'dd/MM/yyyy', {}),
         };
       });
 
@@ -106,13 +106,13 @@ const Dashboard: React.FC = () => {
                 <tr key={transaction.id}>
                   <td className="title">{transaction.title}</td>
                   {transaction.type === 'income' && (
-                    <td className="income">{transaction.value}</td>
+                    <td className="income">{transaction.formattedValue}</td>
                   )}
                   {transaction.type === 'outcome' && (
-                    <td className="outcome">{`- ${transaction.value}`}</td>
+                    <td className="outcome">{`- ${transaction.formattedValue}`}</td>
                   )}
                   <td>{transaction.category.title}</td>
-                  <td>{transaction.createdAtFormatted}</td>
+                  <td>{transaction.formattedDate}</td>
                 </tr>
               ))}
             </tbody>
